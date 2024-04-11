@@ -50,16 +50,38 @@ def build_n_gram(tokens, n=2):
 
 
 # 计算信息熵
-def calculate_entropy(n_grams):
-    n_gram_counts = Counter(n_grams)
-    total_n_grams = sum(n_gram_counts.values())
+def calculate_entropy(n_grams, n=1):
+    # n_gram_counts = Counter(n_grams)
+    # total_n_grams = sum(n_gram_counts.values())
+    #
+    # # 计算概率分布
+    # probabilities = [count / total_n_grams for count in n_gram_counts.values()]
+    #
+    # # 计算信息熵
+    # entropy = -sum(p * math.log(p, 2) for p in probabilities)
+    #
+    # return entropy
+    if n == 1:
+        # 对于Unigram，条件熵等同于熵
+        n_gram_counts = Counter(n_grams)
+        total_n_grams = sum(n_gram_counts.values())
+        probabilities = [count / total_n_grams for count in n_gram_counts.values()]
+        entropy = -sum(p * math.log(p, 2) for p in probabilities)
+        return entropy
+    else:
+        # 对于Bigram和Trigram，计算条件熵
+        prefix_counts = Counter([' '.join(n_gram.split(' ')[:n - 1]) for n_gram in n_grams])
+        total_prefixes = sum(prefix_counts.values())
 
-    # 计算概率分布
-    probabilities = [count / total_n_grams for count in n_gram_counts.values()]
-
-    # 计算信息熵
-    entropy = -sum(p * math.log(p, 2) for p in probabilities)
-    return entropy
+        n_gram_counts = Counter(n_grams)
+        conditional_entropy = 0
+        for n_gram, n_gram_count in n_gram_counts.items():
+            prefix = ' '.join(n_gram.split(' ')[:n - 1])
+            prefix_count = prefix_counts[prefix]
+            p_n_gram = n_gram_count / total_prefixes
+            p_prefix = prefix_count / total_prefixes
+            conditional_entropy -= p_n_gram * math.log(p_n_gram / p_prefix, 2)
+        return conditional_entropy
 
 
 # 打印N-Gram模型的统计结果
@@ -74,7 +96,7 @@ def print_n_gram_stats(n_grams, n, total_characters):
     print(f"出现频率前10的{n}-gram词语：")
     for i, (gram, count) in enumerate(top_n_grams, start=1):
         print(f"{i}.({repr(gram)}, {count})")
-    print(f"The estimated entropy for Chinese using a {n}-gram model is: {calculate_entropy(n_grams):.2f} bits.\n")
+    print(f"The estimated entropy for Chinese using a {n}-gram model is: {calculate_entropy(n_grams,n):.2f} bits.\n")
 
 
 if __name__ == "__main__":
