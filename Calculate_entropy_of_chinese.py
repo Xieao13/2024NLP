@@ -8,7 +8,7 @@ import re
 # 从inf.txt读取文件路径
 def load_file_paths(inf_path):
     with open(inf_path, 'r', encoding='gb18030') as file:
-        # 假设每个文件名都在新的一行
+        # 假设每个文件名都以逗号隔开
         file_names = file.read().strip().split(',')
         # 构建文件路径列表
         return [f"chinese_dataset/{name.strip()}.txt" for name in file_names]

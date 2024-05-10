@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.8 (DLNLP2023-main)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (DLNLP2023-main)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (NLP2024)" project-jdk-type="Python SDK" />
   <component name="PyPackaging">
     <option name="earlyReleasesAsUpgrades" value="true" />
   </component>
